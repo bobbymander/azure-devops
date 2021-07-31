@@ -1,0 +1,53 @@
+bmand@DESKTOP-4S3G362 MINGW64 ~/src/nd082-Azure-Cloud-DevOps-Starter-Code/C1 - Azure Infrastructure Operations/project/starter_files (master)
+$ az policy assignment list
+[
+  {
+    "description": "This is the default set of policies monitored by Azure Security Center. It was automatically assigned as part of onboarding to Security Center. The default assignment contains only audit policies. For more information please visit https://aka.ms/ascpolicies",
+    "displayName": "ASC Default (subscription: 9ae58088-2eab-4683-8358-02e573fca8ab)",
+    "enforcementMode": "Default",
+    "id": "/subscriptions/9ae58088-2eab-4683-8358-02e573fca8ab/providers/Microsoft.Authorization/policyAssignments/SecurityCenterBuiltIn",
+    "identity": null,
+    "location": null,
+    "metadata": {
+      "assignedBy": "Security Center",
+      "createdBy": "c191cba4-434b-47a4-98a5-5bd8fc3e7eb9",
+      "createdOn": "2020-01-13T22:32:42.2428616Z",
+      "updatedBy": null,
+      "updatedOn": null
+    },
+    "name": "SecurityCenterBuiltIn",
+    "notScopes": null,
+    "parameters": {},
+    "policyDefinitionId": "/providers/Microsoft.Authorization/policySetDefinitions/1f3afdf9-d0c9-4c3d-847f-89da613e70a8",
+    "scope": "/subscriptions/9ae58088-2eab-4683-8358-02e573fca8ab",
+    "sku": {
+      "name": "A1",
+      "tier": "Standard"
+    },
+    "type": "Microsoft.Authorization/policyAssignments"
+  },
+  {
+    "description": null,
+    "displayName": null,
+    "enforcementMode": "Default",
+    "id": "/subscriptions/9ae58088-2eab-4683-8358-02e573fca8ab/providers/Microsoft.Authorization/policyAssignments/ztYQtbV9TzuGqxo4s3J7Xw",
+    "identity": null,
+    "location": null,
+    "metadata": {
+      "createdBy": "d150b92a-68b3-4d1c-876a-b8285613278b",
+      "createdOn": "2021-07-12T14:31:16.1457026Z",
+      "updatedBy": null,
+      "updatedOn": null
+    },
+    "name": "ztYQtbV9TzuGqxo4s3J7Xw",
+    "notScopes": null,
+    "parameters": null,
+    "policyDefinitionId": "/subscriptions/9ae58088-2eab-4683-8358-02e573fca8ab/providers/Microsoft.Authorization/policyDefinitions/tagging-policy",
+    "scope": "/subscriptions/9ae58088-2eab-4683-8358-02e573fca8ab",
+    "sku": {
+      "name": "A0",
+      "tier": "Free"
+    },
+    "type": "Microsoft.Authorization/policyAssignments"
+  }
+]

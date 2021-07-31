@@ -1,7 +1,9 @@
 # Azure Infrastructure Operations Project: Deploying a scalable IaaS web server in Azure
 
 ### Introduction
-For this project, we created a Packer template and a Terraform template to deploy a customizable, scalable web server in Azure.
+For this project, we created a Packer template and a Terraform template to deploy a customizable, scalable web server in Azure.  We started with development tool setup and Azure account setup.  The tools we used include the Azure command line interface, packer for building customized images, and terraform for deploying to Azure.  We also used the Azure Portal to setup resource groups and verify policies.  We encountered some gotchas in the project such as creating service principals and setting proper environment variables.  
+
+Once all was working, we could deploy our new web server in a matter of minutes and destroy the same very quickly as well.
 
 ### Dependencies
 1. Create an [Azure Account](https://portal.azure.com) 
@@ -11,7 +13,7 @@ For this project, we created a Packer template and a Terraform template to deplo
 
 ### Instructions
 
-1.  Create a resource group using the Portal.
+1.  Create a resource group using the Portal.  Navigate to the resource groups module and click + to add a resource group.
 
 2.  Create  a service principal as below:
 
@@ -25,19 +27,39 @@ export ARM_CLIENT_SECRET=9mCiQP3G5~q-zbpoTE2~l5KyveBL1Ot0c-
 export ARM_SUBSCRIPTION_ID=9ae58088-2eab-4683-8358-02e573fca8ab
 export ARM_TENANT_ID=e48b486a-777d-49eb-9ae0-5d33b396cc2e
 
-4.  Run packer as follows (will take time):
+All these are needed to run packer and terraform properly.
+
+4.  Run packer as follows to create the server image (this will take time):
 
 packer build server.json
 
-5.  Run terraform as follows (last step will take time):
+5.  Run terraform as follows to deploy the web server (the last step will take time):
 
+# this ensures the Azure plugin is installed
 terraform init
-terraform plan -out solution.plan
-export MSYS_NO_PATHCONV=1
+
+# this ensures that the resource group is not created again as we've already created it
 terraform import azurerm_resource_group.main /subscriptions/9ae58088-2eab-4683-8358-02e573fca8ab/resourceGroups/bobby-web-project-rg
+
+# this creates the plan to create the deployment
+terraform plan -out solution.plan
+
+# this deploys the web server.  the export fixes a problem in finding the right resource group
+export MSYS_NO_PATHCONV=1
 terraform apply solution.plan
 
-### Output
+# this destroys everything so we are not continually billed!
+terraform destroy
+
+### Customization
+
+In order to customize this web server for use you can edit the vars.tf file and change the entries there.  There are entries for:
+  -prefix:  naming prefix to use for all the resources we create
+  -purpose:  tag used on all resources we create as all resources need tags due to our policy
+  -location:  the Azure location we are using for our deployment
+  -numVms:  the number of VMs you want to deploy for redundancy
+  
+### Output from packer and terraform
 The lengthy commands for packer and terraform take on the order of 5-10mins to run.  Some sample output is below:
 
 bmand@DESKTOP-4S3G362 MINGW64 ~/src/nd082-Azure-Cloud-DevOps-Starter-Code/C1 - Azure Infrastructure Operations/project/starter_files (master)

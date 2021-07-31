@@ -7,9 +7,9 @@ Once all was working, we could deploy our new web server in a matter of minutes 
 
 ### Dependencies
 1. Create an [Azure Account](https://portal.azure.com) 
-2. Install the [Azure command line interface](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
-3. Install [Packer](https://www.packer.io/downloads)
-4. Install [Terraform](https://www.terraform.io/downloads.html)
+1. Install the [Azure command line interface](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
+1. Install [Packer](https://www.packer.io/downloads)
+1. Install [Terraform](https://www.terraform.io/downloads.html)
 
 ### Instructions
 
@@ -17,47 +17,47 @@ Once all was working, we could deploy our new web server in a matter of minutes 
 
 2.  Create  a service principal as below:
 
-az ad sp create-for-rbac --name bobby-sp
-az role assignment create --assignee a1e4a397-2239-461b-bc4d-2b1aa0652775 --role Contributor
+* `az ad sp create-for-rbac --name bobby-sp`
+* `az role assignment create --assignee a1e4a397-2239-461b-bc4d-2b1aa0652775 --role Contributor`
 
 3.  Setup your environment variables as below:
 
-export ARM_CLIENT_ID=a1e4a397-2239-461b-bc4d-2b1aa0652775
-export ARM_CLIENT_SECRET=9mCiQP3G5~q-zbpoTE2~l5KyveBL1Ot0c-
-export ARM_SUBSCRIPTION_ID=9ae58088-2eab-4683-8358-02e573fca8ab
-export ARM_TENANT_ID=e48b486a-777d-49eb-9ae0-5d33b396cc2e
+* `export ARM_CLIENT_ID=a1e4a397-2239-461b-bc4d-2b1aa0652775`
+* `export ARM_CLIENT_SECRET=9mCiQP3G5~q-zbpoTE2~l5KyveBL1Ot0c-`
+* `export ARM_SUBSCRIPTION_ID=9ae58088-2eab-4683-8358-02e573fca8ab`
+* `export ARM_TENANT_ID=e48b486a-777d-49eb-9ae0-5d33b396cc2e`
 
 All these are needed to run packer and terraform properly.
 
 4.  Run packer as follows to create the server image (this will take time):
 
-packer build server.json
+`packer build server.json`
 
 5.  Run terraform as follows to deploy the web server (the last step will take time):
 
-# this ensures the Azure plugin is installed
-terraform init
+  #### this ensures the Azure plugin is installed
+  `terraform init`
 
-# this ensures that the resource group is not created again as we've already created it
-terraform import azurerm_resource_group.main /subscriptions/9ae58088-2eab-4683-8358-02e573fca8ab/resourceGroups/bobby-web-project-rg
+  #### this ensures that the resource group is not created again as we've already created it
+  `terraform import azurerm_resource_group.main /subscriptions/9ae58088-2eab-4683-8358-02e573fca8ab/resourceGroups/bobby-web-project-rg`
 
-# this creates the plan to create the deployment
-terraform plan -out solution.plan
+  #### this creates the plan to create the deployment
+  `terraform plan -out solution.plan`
 
-# this deploys the web server.  the export fixes a problem in finding the right resource group
-export MSYS_NO_PATHCONV=1
-terraform apply solution.plan
+  #### this deploys the web server.  the export fixes a problem in finding the right resource group
+  `export MSYS_NO_PATHCONV=1`
+  `terraform apply solution.plan`
 
-# this destroys everything so we are not continually billed!
-terraform destroy
+  #### this destroys everything so we are not continually billed!
+  `terraform destroy`
 
 ### Customization
 
 In order to customize this web server for use you can edit the vars.tf file and change the entries there.  There are entries for:
-  -prefix:  naming prefix to use for all the resources we create
-  -purpose:  tag used on all resources we create as all resources need tags due to our policy
-  -location:  the Azure location we are using for our deployment
-  -numVms:  the number of VMs you want to deploy for redundancy
+  * -prefix:  naming prefix to use for all the resources we create
+  * -purpose:  tag used on all resources we create as all resources need tags due to our policy
+  * -location:  the Azure location we are using for our deployment
+  * -numVms:  the number of VMs you want to deploy for redundancy
   
 ### Output from packer and terraform
 The lengthy commands for packer and terraform take on the order of 5-10mins to run.  Some sample output is below:
